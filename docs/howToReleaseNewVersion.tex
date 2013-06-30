@@ -1,0 +1,342 @@
+\documentclass[12pt]{article}
+
+\usepackage{aim}
+%\usepackage{draftcopy}
+%\usepackage[html]{tex4ht}
+\usepackage{bookman}
+%\spreadout
+  \myphone{(202) 452-2687}
+  \myinternet{ganderson\char64frb.gov}
+  \myuucp{}
+  \myname{Gary S. Anderson}
+  \myrank{}
+ \sendto{File}
+\newcommand{\spsv}{{\bf SPSolve}} 
+\newcommand{\sps}{{\bf sp\_solve}} 
+\newcommand{\lbLb}{$\sharp.\sharp$}
+\newcommand{\aug}{{\bf Aim Users' Group Announcement List}} 
+
+\begin{document}
+
+
+\begin{memo}{How To Update the /mq/aim/matlab/\sps }
+%mailinglabel
+%\cc{}
+%\initials{ }
+%\ps{}
+
+\section{Introduction and Summary}
+\label{sec:Intro}
+This memo describes how to update the programs residing in the \sps\ directory.
+The \sps\  directory contains the current release 
+of the \spsv\   suite of programs.
+The directory also contains subdirectories containing the previous versions
+of the programs.\footnote{ The files in these 
+directories may differ little or not at all from the current release files.
+The directories provide a mechanism for users to easily switch 
+between potentially different vintages of the \sps\ programs.}
+Appendix \ref{sec:spsDirsAndFiles} contains a list of all the \spsv\ programs, 
+the directories which contain their files, and the pointer files (described below)
+ which control the current version of the program.
+
+
+Many  economists around the Board use ``Aim'':  a collection of programs
+for solving linear rational expectations models.
+In 1999, Gary Anderson, Bob Tetlow and Frederico Finan 
+developed a standardized set of these routines(\spsv) 
+and placed them in a Board-wide accessible directory.
+This standardization and centralization has 
+facilitated the distribution of bug fixes and improvements in code functionality
+ and performance.  
+
+To begin using the most up to date
+stable version of the code you should visit:
+
+{ \bf
+http://www.rsma.frb.gov/mq/aimsite/examples.html
+}
+
+\noindent
+for instructions and examples.
+
+
+In the past, we haven't announced  improvements and extensions to the
+{\bf \spsv\  } programs.
+Since we have done extensive testing to assure ourselves that revised 
+routines give the
+same numerical results as the old routines,
+these revisions have not affected
+your work flow. It would seem that few have been aware of
+any of the improvements we've made.
+We will enhance and continue the testing regimen so that
+you should continue to expect 
+to be able to use the \spsv\  routines with 
+rare and voluntary modifications to your code 
+for taking advantage of new \spsv\  functionality.
+
+
+We will now begin using the \aug\  for
+announcing changes. By doing so, we can
+\begin{itemize}
+\item more easily notify users of 
+improvements and additional functionality
+\item provide a mechanism to  make it easier for you to report problems 
+or request new features.
+\end{itemize}
+
+
+% The latest revisions include modifications that
+% \begin{enumerate}
+% \item  eliminate differences between unix and Windows versions of {\bf \spsv\ }  code.
+% \item provide a more robust calculation of observable structure
+% \end{enumerate}
+% These revisions require no modification to code that uses the current \spsv\ 
+% set of routines.
+
+
+
+\section{Pre-requisites}
+\label{sec:preq}
+Carrying out an \spsv\ update requires access to and some
+familiarity with several programs:
+
+\begin{description}
+\item[CVS] You should have familiarity with basic CVS commands. You 
+should have CVSROOT set to point to the 
+CVS repository containing the \spsv\ programs.
+\item[Matlab] You should have familiarity with basic Matlab commands. 
+\item[Aim Users' Group]You should become a member of the Aim Users' Group
+and obtain permission to send broadcast messages to that group.
+\item[Java/JUnit] You should have java 1.3 or later on your path
+as and have your java CLASSPATH set to include paths to the
+{\em ant } and {\em junit } JAR files.
+\end{description}
+
+\section{One Week Prior to Release}
+\label{sec:OneWeek}
+
+  \begin{description}
+\item[Send E-mail Announcement] One week before a version upgrade takes place, email aim-users notifying them
+of the date and time of the impending update, as well as the programs you'll be updating. Also, obtain a list of the changes
+and improvements in the new version of the program, from the program developer, for inclusion in the announcement. 
+Appendix \ref{sec:weekaheademail} contains some text one might use for the email.
+\item[Obtain new version code] Obtain a copy of the new version of the \spsv\ programs you intend to update. For each 
+program, all files should be inside of one directory, called ``programVer\lbLb'' where \lbLb\ is the current version number, 
+and ``program'' is an abbreviation of the program name. Appendix \ref{sec:weekaheademail} lists the  directory abreviations
+ and their corresponding program names. Speak with the program's developer to find out where to obtain a copy of the 
+new program.
+\item[Insert code into the Version History] Copy the entire directory of the new version of the \spsv\ program(s)  into
+ the /sp\_solve/matlab/versionHistory/ directory.
+\item[Test the  Current version] ant runtest current version as a benchmark 
+  \end{description}
+
+\section{One Day Prior to Release}
+\label{sec:OneDay}
+  \begin{description}
+\item[Give AIM users One Day Warning]  One day before changing the program pointer files (described below), E-mail the AIM
+ user’s group warning them of the impending change. Also include the list of changes made in this upgrade, which you 
+obtained from the program developer. Appendix \ref{sec:daybeforeemail} contains some text one might use for the email.
+  \end{description}
+
+\section{One Hour Prior to Release}
+\label{sec:OneHour}
+  \begin{description}
+\item[Give AIM users 60 minute warning]  60 minutes before changing the program pointer files (described below), E-mail the
+ AIM user’s group reminding them when the \spsv\ programs will be out-of-commission for the upgrade.
+ Appendix \ref{sec:hourbeforeemail} contains some text one might use for the email.
+  \end{description}
+
+\section{Making the Shift}
+\label{sec:MakShift}
+  \begin{description}
+\item[Open Pointer File] Open up the file ``\spsv.m'' in the /\sps/matlab / directory.
+\item[Alter pointer file] Find the lines just after the header comments that look like this;
+\begin{verbatim}
+
+%Paths for windows
+        winSPActualPath = 'some\root\path\sps\matlab\versionHistory\aimVer#.#\src\';
+        winSPParserPath = 'some\root\path\sp_solve\matlab\versionHistory\aimVer#.#\parser\lib\';
+
+%Paths for unix
+        unixSPActualPath = '/some/root/path/sp_solve/matlab/versionHistory/aimVer#.#/src/';
+        unixSPParserPath = '/some/root/path/sp_solve/matlab/versionHistory/aimVer#.#/parser/lib/';
+\end{verbatim}
+
+Where \lbLb\ is the most recent version of AIM, and /some/root/path/ is the root path to your \sps directory. In all of the paths in these lines, change the \lbLb\ to match the new version of AIM you just copied into the /\sps/matlab/versionHistory/ directory. That is, if you just copied in a a directory called ``aimVer3.2'' then all of the \lbLb\ should be changed to 3.2 in all of the paths.
+\item[Test the newVersion Files]  Find the file SPMatlabTest.m in the /\sps/matlab/tests/ directory, open it, and run it in matlab under unix and windows. It should call \spsv.m five times, and on the fifth test, it should crash. If this is the case, the version change has been executed successfully.
+\item[Tar up the Oldest Var] 
+\item[Place Tar in archive]
+\item[Remove Oldest Ver]
+  \end{description}
+
+\section{One Hour After Release}
+\label{sec:OneHourAfter}
+  \begin{description}
+\item[Announce] After confirming the success of the version upgrade, send an E-mail to the AIM user’s group informing them of the completion of the version upgrade. 
+Appendix \ref{sec:doneemail} contains 
+some text one might use for the email.
+  \end{description}
+
+
+%  \end{description}
+
+\appendix
+
+\section{\spsv\ Directories and Pointer Files}
+\label{sec:spsDirsAndFiles}
+
+\begin{itemize}
+\item Directory for utility routines
+\item encourage function call instead of global variables.
+Use nargs: no args use global, with args use args.
+\end{itemize}
+
+\section{Example Notification E-mail}
+\label{sec:allemail}
+
+\subsection{ Week Ahead Email Text}
+
+
+\label{sec:weekaheademail}
+The week ahead email should serve to
+\begin{itemize}
+\item notify users of the date of the iminent update
+\item inform them of nature of improvements and bug fixes in the current 
+update
+\item alert them to changes they will have to make in order to continue
+their work
+\item reassure them about the possibility of accessing old versions 
+if they encounter problems with the new version
+\item provide the name, e-mail address and phone number of the person
+carrying out the update
+\end{itemize}
+
+For example:
+\begin{quote}
+To: AIM USERS\\
+Subject: SPSolve update
+
+  On March 27, 2003, Brian Ironside(brian.m.ironside@frb.gov  x3723)
+ will install a new suite of SPSolve programs.
+Starting on that date, SPSolve users will have to reset their
+MATLAB path to some gnarly thing like /mq/home/crossYourFingers/matlab.
+The new update provides:
+
+\begin{itemize}
+\item improved numerical robustness for ill-conditioned problems
+\item reconciled differences between Windows and Unix versions
+\item Windows platform: eliminated reliance on dll's
+\item establishing a utility routines sub-directory 
+for impulse response functions, variance covariance caluclation etc.
+\end{itemize}
+\end{quote}
+
+Report any problems to   Brian Ironside(brian.m.ironside@frb.gov  x3723).
+
+\subsection{Day Before Email Text}
+\label{sec:daybeforeemail}
+
+The day ahead email should serve to
+\begin{itemize}
+\item resolve any general questions generated by  the earlier email
+\item notify users of the date of the iminent update
+\item inform them of nature of improvements and bug fixes in the current 
+update
+\item alert them to changes they will have to make in order to continue
+their work
+\item reassure them about the possibility of accessing old versions 
+if they encounter problems with the new version
+\item provide the name, e-mail address and phone number of the person
+carrying out the update
+\end{itemize}
+
+
+Resend week ahead email substituting 
+{\bf Tomorrow March 27, 2003 } to the first sentence
+in place of March 27, 2003.
+
+
+\subsection{Hour Before Email Text}
+
+\label{sec:hourbeforeemail}
+
+The day ahead email should serve to
+\begin{itemize}
+\item resolve any general questions generated by  the earlier email
+\item suggest that  users delay accessing the files for the next hour.
+\item alert them to changes they will have to make in order to continue
+their work
+\item reassure them about the possibility of accessing old versions 
+if they encounter problems with the new version
+\item provide the name, e-mail address and phone number of the person
+carrying out the update
+\end{itemize}
+
+
+For example:
+\begin{quote}
+To: AIM USERS\\
+Subject: SPSolve update
+
+  Brian Ironside(brian.m.ironside@frb.gov  x3723)
+ will install a new suite of SPSolve programs within the next hour.
+Users should delay accessing the SPSolve directory until after 8:00PM.
+After 8:00PM, SPSolve users will have to reset their
+MATLAB path to some gnarly thing like /mq/home/crossYourFingers/matlab.
+The new update provides:
+
+\begin{itemize}
+\item improved numerical robustness for ill-conditioned problems
+\item reconciled differences between Windows and Unix versions
+\item Windows platform: eliminated reliance on dll's
+\item establishing a utility routines sub-directory 
+for impulse response functions, variance covariance caluclation etc.
+\end{itemize}
+\end{quote}
+
+Report any problems to   Brian Ironside(brian.m.ironside@frb.gov  x3723).
+
+\subsection{Finished Email Text}
+\label{sec:doneemail}
+
+The ``finished'' email should serve to
+\begin{itemize}
+\item resolve any general questions generated by  the earlier email
+\item notify users that the SPSolve files are once again available.
+\item alert them to changes they will have to make in order to continue
+their work
+\item reassure them about the possibility of accessing old versions 
+if they encounter problems with the new version
+\item provide the name, e-mail address and phone number of the person
+carrying out the update
+\end{itemize}
+
+
+For example:
+\begin{quote}
+To: AIM USERS\\
+Subject: SPSolve update
+
+  Brian Ironside(brian.m.ironside@frb.gov  x3723)
+ has completed installing a new suite of SPSolve programs.
+SPSolve users will have to reset their
+MATLAB path to some gnarly thing like /mq/home/crossYourFingers/matlab.
+The new update provides:
+
+\begin{itemize}
+\item improved numerical robustness for ill-conditioned problems
+\item reconciled differences between Windows and Unix versions
+\item Windows platform: eliminated reliance on dll's
+\item establishing a utility routines sub-directory 
+for impulse response functions, variance covariance caluclation etc.
+\end{itemize}
+\end{quote}
+
+Report any problems to   Brian Ironside(brian.m.ironside@frb.gov  x3723).
+
+\bibliographystyle{plain}
+\bibliography{files}
+
+\end{memo}
+%\mailinglabel
+\end{document}

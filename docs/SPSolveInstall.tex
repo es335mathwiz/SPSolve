@@ -1,0 +1,45 @@
+\documentclass[12pt]{article}
+\textheight9.5in\textwidth6.0in
+\oddsidemargin0.25in\topmargin-1.0in
+
+\def\versionNameI#1 #2,v 1.4 2005/01/18 15:06:58 m1gsa00 Exp ${#2}
+\def\version$#1,v #2 #3${#2}
+\def\versionDate$#1,v #2 #3 #4${#3}
+%    \newcommand{\CVSrevision}{\version$Id: SPSolveInstall.tex,v 1.11 2005/09/13 22:48:07 m1gsa00 Exp $}
+% \newcommand{\CVSrevision}{\version$Id: SPSolveInstall.tex,v 1.11 2005/09/13 22:48:07 m1gsa00 Exp $}
+ \newcommand{\CVSRevision}{\version$Id: SPSolveInstall.tex,v 1.11 2005/09/13 22:48:07 m1gsa00 Exp $}
+ \newcommand{\CVSRevisionDate}{\versionDate$Id: SPSolveInstall.tex,v 1.11 2005/09/13 22:48:07 m1gsa00 Exp $}
+ \newcommand{\CVSRevisionName}{\versionName$Id: SPSolveInstall.tex,v 1.11 2005/09/13 22:48:07 m1gsa00 Exp $}
+\def\versionTag$Na#1: #2 ${#2}
+ \newcommand{\CVSVersionTag}{\versionTag$Name: SPSolveV2-0g $}
+
+
+\usepackage{authordate1-4}
+
+
+
+\usepackage{bookman}
+\newcommand{\sps}{{\bf sp\_solve Version \CVSVersionTag }}
+%\spreadout
+\title{How To Install \\ \sps\\
+}
+\author{Gary Anderson}
+\begin{document}
+%mailinglabel
+%\cc{}
+%\initials{ }
+%\ps{}
+
+\maketitle
+\input{theIntro}
+
+
+
+
+\input{boardInstall}
+
+
+\bibliographystyle{authordate1}
+\bibliography{SPSolve}
+%\mailinglabel
+\end{document}

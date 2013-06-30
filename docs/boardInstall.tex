@@ -1,0 +1,41 @@
+
+For this installation procedure to work,
+you must have access to the Board's RSMA network via a Board
+desktop or laptop.
+You must also be in the ``AIM''
+unix group. Type the command ``groups'' 
+at a unix prompt to get a list of the groups you are in. If you're not
+in the group, contact Gary Anderson to become a member.
+
+To install the code:
+\begin{enumerate}
+\item Set the CVSROOT environment variable 
+\begin{description}
+\item[Unix] \ 
+
+Get a unix prompt from xterm, or an emacs shell. At a unix prompt type:
+
+setenv CVSROOT /msu/res2/res5/cvsroot/ 
+\item[Windows] \ 
+
+Use Control Panel$\rightarrow$Settings$\rightarrow$Advanced 
+to set
+
+CVSROOT=:ext:yourloginid@msumx1:/msu/res2/res5/cvsroot/ and CVS\_RSH=ssh
+
+Use cygwin to start a bash shell
+
+\end{description}
+
+\item cd to some location where you can allow cvs to create the directory sp\_solve
+
+\item type cvs co -P -r sp\_solveV2-0 sp\_solve
+\item cd sp\_solve
+\item type matlab -nodesktop at shell prompt
+\item type SPInstall at matlab prompt
+\item type SPRunTests  at matlab prompt\footnote{On SunOs boxes, one can
+also run SPRunSunOsTests}
+\end{enumerate}
+
+Report any problems to Gary Anderson(ganderson@frb.gov)
+

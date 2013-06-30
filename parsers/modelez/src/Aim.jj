@@ -1,0 +1,495 @@
+
+options {
+  LOOKAHEAD = 1;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = true;
+  DEBUG_PARSER = false;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = false;
+}
+
+PARSER_BEGIN(Aim)
+package modelezAim;
+import java.io.*;
+
+public class Aim {
+
+    // declare constants
+
+    public static final int No = 0;
+    public static final int Yes = 1;
+
+    public static final int Max_Array_Size = 10000;
+
+    public static final int Left_Side = 100;
+    public static final int Right_Side = 101;
+
+    public static final int G_Matrix = 0;
+    public static final int H_Matrix = 1;
+
+    public static final int Endogenous = 0;
+    public static final int Exogenous = 1;
+
+    public static final int Data = 0;
+    public static final int Notd = 1;
+    public static final int Dtrm = 2;
+////    public static final int Innov = 3;
+
+    public static final int Stoch = 0;
+    public static final int Imposed = 1;
+
+    public static final int Wrong_Node_Type = 0;
+    public static final int Invalid_Node_Type = 1;
+    public static final int Cannot_Allocate_Memory = 2;
+
+  static java.util.Stack argStack = new java.util.Stack();
+  static Model m;
+
+  public static void main(String args[]) throws ParseException {
+
+  Aim parser = new Aim(System.in);
+  int status = 0;
+  status = parser.runParser(args);
+
+// code to test reentrance
+//  String newargs[] = new String[1];  
+//  newargs[0] = new String("antulio");
+//  status = parser.runParser(newargs);
+
+  System.exit(status);
+}
+
+  public static int notMain(String args[]) throws ParseException {
+
+  Aim parser = new Aim(System.in);
+  int status = 0;
+  status = parser.runParser(args);
+
+// code to test reentrance
+//  String newargs[] = new String[1];  
+//  newargs[0] = new String("antulio");
+//  status = parser.runParser(newargs);
+
+  return(status);
+}
+
+
+
+
+  public static int runParser(String args[]) throws ParseException {
+
+    int ErrorCount;
+    int i;
+    String PathName;
+    String FileName;
+    int lastSlashIndex;
+
+    if (args.length == 1) {
+	System.err.println("Aim Java Parser Version 1.03: Reading from file " +
+                           args[0] + "...");
+        try {
+	  PathName = args[0];
+	  lastSlashIndex = PathName.lastIndexOf('/');   // Real OS's
+	  if (lastSlashIndex < 0)
+	    lastSlashIndex = PathName.lastIndexOf('\\'); // Windows
+	  if (lastSlashIndex < 0)
+	    FileName = PathName;
+          else
+	    FileName = PathName.substring(lastSlashIndex+1);            
+	  m = new Model(FileName);
+//	  parser = new Aim(new java.io.FileInputStream(PathName));
+	  ReInit(new java.io.FileInputStream(PathName));
+        } catch (java.io.FileNotFoundException e) {
+          System.err.println("Aim Java Parser Version 1.03: File " + args[0] +
+                             " not found.");
+          System.err.print(e.getMessage());
+          return(1);
+        }
+    } 
+    else {
+      System.err.println("Aim Java Parser 1.03 usage is:");
+      System.err.println("         java Aim inputfile");
+      return(2);
+    }
+
+    try {
+//      parser.model();
+      model();
+      System.err.println("Aim Java Parser Version 1.03: No syntactic errors found.");
+    } catch (ParseException e) {
+      System.err.println("Aim Java Parser Version 1.03: Syntactic errors found.");
+      System.err.print(e.getMessage());
+      return(3);
+    }
+
+    // DEBUG
+    // System.err.println("\n\nModel before expanding subtrees:");
+    // m.Print();
+
+    m.ExpandSubtrees();
+
+    // DEBUG
+    // System.err.println("\n\nModel after expanding subtrees:");
+    // m.Print();
+
+    ErrorCount = m.ErrorCheck();
+
+    if (ErrorCount == 0)
+      System.err.println("No semantic errors found.");
+    else {
+      System.err.print(ErrorCount + " semantic error");
+      if (ErrorCount > 1)
+        System.err.print("s");
+      System.err.println(" found.");
+      return(4);
+    }
+
+    // DEBUG
+    // System.err.println("\n\nModel after building exogenous equations:");
+    // m.Print();
+
+    m.PrintFunctions();
+
+    return(0);
+  }
+}
+PARSER_END(Aim)
+
+SKIP :
+{
+ 	" "
+  |	"\n"
+  |	"\r"
+  |	"\t"
+}
+
+TOKEN : /* reserved words */
+{
+  	< MODEL: "MODEL" >
+  |	< EQUATION: "EQUATION" >
+  |	< EQ: "EQ" >
+  |	< EQTYPE: "EQTYPE" >
+  |	< ENDOG: "ENDOG" >
+  |	< END: "END" >
+  |	< PROMPT: ">" >
+  |	< DATA: "_DATA" >
+  |	< DTRM: "_DTRM" >
+  |	< NOTD: "_NOTD" >
+  |	< IMPOSED: "IMPOSED" >
+  |	< STOCH: "STOCH" >
+  |	< LAG: "LAG" >
+  |	< ELAG: "ELAG" >
+  |	< LEAD: "LEAD" >
+  |	< ENDOGENOUS: "endogenous" | "ENDOGENOUS" >
+  |	< EXOGENOUS: "exogenous" | "EXOGENOUS" >
+  |	< FILEMOD: "filemod" | "FILEMOD" >
+  |	< INNOV: "innov" | "INNOV" >
+}
+
+TOKEN : /* operators */
+{
+	< PLUS: "+" >
+  |	< MINUS: "-" >
+  |	< MULTIPLY: "*" >
+  |	< DIVIDE: "/" >
+  |	< EXP: "**" | "^" >
+}
+
+TOKEN : /* numeric constants */
+{
+  	< FLOAT: <FLOATBASE>
+	    | <FLOATBASE> ["e","E"] (["-","+"])? <INTEGER>
+	    | <INTEGER> ["e","E"] (["-","+"])? <INTEGER> >
+  | 	< #FLOATBASE: <INTEGER> "." <INTEGER>
+	    | "." <INTEGER>
+	    | <INTEGER> "." >
+  | 	< INTEGER: ( <DIGIT> )+ >
+  | 	< #DIGIT: ["0"-"9"] >
+}
+
+TOKEN : /* identifiers */
+{
+	< IDENTIFIER: ( <LETTER> )+ ( <DIGIT> | <LETTER> | "_" )* >
+  | 	< #LETTER: ["a"-"z", "A"-"Z"] > 
+} 
+
+TOKEN : /* miscellaneous */
+{
+      < COMMA: "," >
+  |   < EQUALS: "=" >
+  |   < OPENPAREN: "(" >
+  |   < CLOSEPAREN: ")" >
+}
+
+
+void model() :
+{  }
+{
+    <MODEL> <PROMPT> <IDENTIFIER> ///////// { m = new Model(token.image); } july 11
+      <ENDOG> <PROMPT> variablelist() eqnlist() <END>
+}
+
+
+void variablelist() : 
+{  }
+{
+    ( variabledef() )+
+}
+
+
+void variabledef() :
+{ String name;
+  Token x;
+  int index;
+}
+{
+    <IDENTIFIER> 
+        {
+	 name = token.image;
+	 Variable v = new Variable(name);
+	 m.AddVariable(v);
+         index = m.FindVariableIndex(name);
+         m.Variables[index].setDelay(0);
+         m.Variables[index].setDataType(Data);
+        }
+    [ <INTEGER>
+        { // set delay
+           m.Variables[index].setDelay((int) Integer.parseInt(token.image));
+        } ]
+    [ ( x = <DATA> | x = <DTRM> | x = <NOTD> )
+        { // set vtype entry
+        switch (x.kind) {
+	 case DATA:
+ 	    m.Variables[index].setDataType(Data);
+	    break;
+	 case NOTD:
+ 	    m.Variables[index].setDataType(Notd);
+	    break;
+	 case DTRM:
+	    m.Variables[index].setDataType(Dtrm);
+	    break;
+	    }
+        } 
+     ]
+}
+
+
+void eqnlist() :
+{ String name;
+  Node n1;
+  Node n2; 
+  Token x;
+  int index;
+  int eqtype;
+}
+{
+    ( <EQUATION> <PROMPT> <IDENTIFIER> 
+        { name = token.image; 
+          eqtype = Stoch;     // default
+        }
+        [ <EQTYPE> <PROMPT> ( x = <IMPOSED> | x = <STOCH> )
+          {
+	    if (x.kind == IMPOSED)
+   	      eqtype = Imposed;
+          }
+        ]
+        <EQ> <PROMPT> expression() <EQUALS> expression()
+	 {
+            m.AddEquation(new Equation(name, eqtype));
+ 	    index = m.getNEq();
+ 	    n1 = ((Node) argStack.pop());
+ 	    n2 = ((Node) argStack.pop());
+ 	    m.Equations[index-1].setLHS(n2);
+ 	    m.Equations[index-1].setRHS(n1);
+	 }
+	)+
+}
+
+void expression() :
+{ Token x; }
+{
+    term() (
+	   ( x = <PLUS> | x = <MINUS> ) term()
+	{
+	    Node n1 = ((Node) argStack.pop());
+	    Node n2 = ((Node) argStack.pop());
+	    if ( x.kind == PLUS )
+	        argStack.push(new SumNode(n2, n1));
+	    else {		
+		ConstantNode cn1 = new ConstantNode(-1.0);
+		ProductNode pn1 = new ProductNode(cn1, n1);
+		argStack.push(new SumNode(n2, pn1));
+		}
+	}
+	)*
+}
+
+void term() :
+{ Token x; }
+{
+    factor() ( 	( x = <MULTIPLY> | x = <DIVIDE> ) factor()
+         {
+     	    Node n1 = ((Node) argStack.pop());
+	    Node n2 = ((Node) argStack.pop());
+	    if ( x.kind == MULTIPLY )
+	       argStack.push(new ProductNode(n2, n1));
+	    else
+		{
+		ConstantNode cn1 = new ConstantNode(-1.0);
+		PowerNode pown1 = new PowerNode(n1, cn1);
+		argStack.push(new ProductNode(n2, pown1));
+		}
+	}
+	)*
+}
+
+void factor() :
+{  }
+{
+    unary() ( LOOKAHEAD( <EXP> ) <EXP> factor()
+	{
+	    Node n1 = ((Node) argStack.pop());
+	    Node n2 = ((Node) argStack.pop());
+	    argStack.push(new PowerNode(n2, n1));
+	}
+	)*
+}
+
+void unary() :
+{  }
+{
+    <MINUS> element()
+	{
+	    Node n1 = ((Node) argStack.pop());
+	    ConstantNode cn1 = new ConstantNode(-1.0);
+	    argStack.push(new ProductNode(cn1, n1));
+	}
+  | element()
+}
+
+
+void element() :
+{ Double d;
+  String VarName;
+  int Lead; 
+  int Lag;
+  int ELag; }
+{
+    <OPENPAREN> expression() <CLOSEPAREN>
+  | constant()
+  | <LAG> { Lag = 1; } 
+      <OPENPAREN> <IDENTIFIER> 
+        {
+          VarName = token.image; 
+          if (m.FindVariableIndex(VarName) == -1) {
+            System.err.println("First operand of LAG must be a variable.");
+            throw new ParseException();
+          }
+        } 
+      ( <COMMA> <INTEGER> 
+         {
+           Lag = (int) Integer.parseInt(token.image);
+           if (Lag <= 0) {
+             System.err.println("LAG must be positive.");
+             throw new ParseException();
+           }
+         }
+          )?
+      <CLOSEPAREN>
+	{ /* variable with a lag */
+	ELag = No;
+	argStack.push(new VariableNode(VarName, -1 * Lag, ELag));
+	if (Lag > m.NLag)
+	  m.setNLag(Lag);
+	}
+  | <ELAG> { Lag = 1; } 
+      <OPENPAREN> <IDENTIFIER> 
+        {
+          VarName = token.image; 
+          if (m.FindVariableIndex(VarName) == -1) {
+            System.err.println("First operand of ELAG must be a variable.");
+            throw new ParseException();
+          }
+        } 
+      ( <COMMA> <INTEGER> 
+         {
+           Lag = (int) Integer.parseInt(token.image);
+           if (Lag <= 0) {
+             System.err.println("ELAG must be positive.");
+             throw new ParseException();
+           }
+         }
+          )?
+      <CLOSEPAREN>
+	{ /* variable with an elag */
+	ELag = Yes;
+	argStack.push(new VariableNode(VarName, -1 * Lag, ELag));
+	if (Lag > m.NLag)
+	  m.setNLag(Lag);
+	}
+  | <LEAD> { Lead = 1; }
+      <OPENPAREN> <IDENTIFIER>
+        {
+          VarName = token.image; 
+          if (m.FindVariableIndex(VarName) == -1) {
+            System.err.println("First operand of LEAD must be a variable.");
+            throw new ParseException();
+          }
+        } 
+      ( <COMMA> <INTEGER>
+         {
+           Lead = (int) Integer.parseInt(token.image);
+           if (Lead <= 0) {
+             System.err.println("LEAD must be positive.");
+             throw new ParseException();
+            }
+         }
+        )?
+      <CLOSEPAREN>
+	{ /* variable with a lead */
+	ELag = No;
+	argStack.push(new VariableNode(VarName, Lead, ELag));
+	if (Lead > m.NLead)
+	  m.setNLead(Lead);
+	}
+  | <IDENTIFIER>
+	{ /* could be either a variable or a coefficient */
+	if (m.FindVariableIndex(token.image) == -1) /* coefficient */
+		{
+		if (m.FindCoefficientIndex(token.image) < 0)
+		   m.AddCoefficient(token.image);
+		argStack.push(new CoefficientNode(token.image));
+		}
+	else /* variable with no lags or leads */
+	       {
+	       argStack.push(new VariableNode(token.image, 0, No));
+	       }
+	}
+}
+
+void constant() :
+{ Token x;
+  Double d; }
+{
+    ( <INTEGER> | <FLOAT> )
+      {
+	d = Double.valueOf(token.image);
+	try {
+	    argStack.push(new ConstantNode(d.doubleValue()));
+	    } catch (NumberFormatException ee) {
+	argStack.push(new ConstantNode(Double.NaN));
+	}
+      }
+}
+

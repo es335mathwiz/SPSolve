@@ -1,0 +1,108 @@
+\documentclass[12pt]{article}
+\textheight9.5in\textwidth6.0in
+\oddsidemargin0.25in\topmargin-1.0in
+
+\def\versionName$I#1 #2,v 1.4 2005/01/18 15:06:58 m1gsa00 Exp ${#2}
+\def\version$#1,v #2 #3${#2}
+\def\versionDate$#1,v #2 #3 #4${#3}
+%    \newcommand{\CVSrevision}{\version$Id: SPHowTo.tex,v 1.3 2005/02/02 23:16:00 m1gsa00 Exp $}
+% \newcommand{\CVSrevision}{\version$Id: SPHowTo.tex,v 1.3 2005/02/02 23:16:00 m1gsa00 Exp $}
+ \newcommand{\CVSRevision}{\version$Id: SPHowTo.tex,v 1.3 2005/02/02 23:16:00 m1gsa00 Exp $}
+ \newcommand{\CVSRevisionDate}{\versionDate$Id: SPHowTo.tex,v 1.3 2005/02/02 23:16:00 m1gsa00 Exp $}
+ \newcommand{\CVSRevisionName}{\versionName$Id: SPHowTo.tex,v 1.3 2005/02/02 23:16:00 m1gsa00 Exp $}
+\def\versionTag$Na#1: #2 ${#2}
+ \newcommand{\CVSVersionTag}{\versionTag$Name: SPSolveV2-0g $}
+
+
+
+
+
+\usepackage{bookman}
+\usepackage{authordate1-4}
+\newcommand{\sps}{{\bf sp\_solve  }}
+\newcommand{\spsv}{{\bf \sps,\CVSVersionTag }}
+
+%\spreadout
+\title{How To Use \\ \sps\\
+}
+\author{Gary Anderson}
+\begin{document}
+%mailinglabel
+%\cc{}
+%\initials{ }
+%\ps{}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction and Summary}
+\label{sec:intro}
+\input{theIntro}
+
+
+
+\section{Installation}
+\label{sec:install}
+
+
+\subsection{RSMA Network, FED Laptop and Desktop PC's}
+\label{sec:boardinstall}
+
+
+\input{boardInstall}
+
+\subsection{Generic Zip File}
+\label{sec:zipinstall}
+\input{zipInstall}
+
+\input{zipInstall}
+\section{Examples}
+\label{sec:examples}
+
+\subsection{Basic Model File Syntax}
+\label{sec:syntax}
+
+
+\subsubsection{MODELEZ}
+
+
+\subsubsection{TROLL}
+
+
+\subsection{Obtaining the Autoregressive Solution("the B Matrix")}
+\subsection{Obtaining the Observable Structure("the S Matrix")}
+
+\subsection{Obtaining the Stochastic Transition Matrices("the A and M Matrices")}
+
+
+
+\subsection{Interpretting "AIM Error Codes"}
+
+
+
+\subsection{Computing Unconditional Covariances}
+\label{sec:cov}
+
+\subsection{Non-Homogeneous Solutions(Specifying Constants)}
+\label{sec:constants}
+\subsection{Models With Unit Roots}
+\label{sec:constants}
+\subsection{Lagged-Aligned Expectations}
+\label{sec:lagged}
+
+
+
+\subsection{Getting Help}
+\label{sec:documentation}
+
+
+
+
+\section{FAQ}
+\label{sec:faq}
+
+\bibliographystyle{authordate1}
+\bibliography{anderson}
+%\mailinglabel
+\end{document}

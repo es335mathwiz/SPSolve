@@ -1,0 +1,15 @@
+#! /bin/csh
+
+/opt/java/bin/java -classpath .:../lib:/opt/java/lib/classes.zip Aim habitrot
+
+/opt/java/bin/java -classpath .:../lib:/opt/java/lib/classes.zip Aim testmod
+    
+/opt/java/bin/java -classpath .:../lib:/opt/java/lib/classes.zip Aim naivekl
+    
+/opt/java/bin/java -classpath .:../lib:/opt/java/lib/classes.zip Aim antulio
+    
+/opt/java/bin/java -classpath .:../lib:/opt/java/lib/classes.zip Aim pcdyn30
+    
+/opt/java/bin/java -classpath .:../lib:/opt/java/lib/classes.zip Aim frbusre
+    
+/opt/java/bin/java -classpath .:../lib:/opt/java/lib/classes.zip Aim r3ur0

@@ -1,0 +1,27 @@
+You must have a program for
+extracting files from the ``zipped'' file 
+
+{\bf \sps.zip}.
+
+
+To install the code:
+\begin{enumerate}
+\item extract the files in some folder/directory
+where you can  create the directory {\bf sp\_solve}
+\item cd sp\_solve
+\item type matlab -nodesktop at shell prompt
+\item type SPInstall at matlab prompt\footnote{Version 6 users will
+need to either 1) notify matlab of the existence of new java programs, or
+2)guarantee that ``!java -version'' executes an external version of java.
+To aide in implementing the first approach,
+the SPInstall program generates operating system specific
+SPClasspathOsName.txt files that one can use to update the
+original classpath.txt files.  See Matlab External Interfaces/API
+Chapter 5(Page 5-7) for details.}
+\item type SPRunTests  at matlab prompt\footnote{On SunOs boxes, one can
+also run SPRunSunOsTests}
+\end{enumerate}
+
+Report any problems to Gary Anderson(ganderson@frb.gov)
+
+
