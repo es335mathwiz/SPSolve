@@ -15,7 +15,7 @@ Q_L = q(:,1:neq*nlag);
 Q_R = q(:,neq*nlag+1:neq*(nlag+nlead));
 
 % Calculate the B Matrix, B = Q_R^-1 * Q_L, which is neq*nlead x neq*nlag
-B = Q_R\Q_L;
+B = -Q_R\Q_L;
 
 % Calculate the B_R Matrix, which is neq*nlead x neq
 B_R = B(:,neq*(nlag-1)+1:neq*nlag);
@@ -26,10 +26,10 @@ F = zeros(nlead*neq,nlead*neq);
 % Fill in the identity matrices in F 
 % Establish the veritcal index for inserting 1s into F
 
-for j = 1:neq*(nlead-1)
+for i = 1:neq*(nlead-1)
         
     % Establish the horizontal index for inserting 1s into F
-    i = j + neq; 
+    j = i + neq; 
     
     % Insert Identity values into F
     F(i,j) = 1;
@@ -53,7 +53,7 @@ end
 % Calculate the final row of matrices in F by looping over the values
 % from 1 to nlead.
 for k = nlead:-1:1
-    
+   
     % Calculate the matrix to be entered into F and enter it
     newEntry = -phi * H_plus * newB_R;
     F(neq*(nlead-1)+1:neq*nlead,neq*(k-1)+1:neq*k) = newEntry; 
@@ -61,7 +61,7 @@ for k = nlead:-1:1
         
         % Update newB_R for the next matrix to be inserted by shifting down 
         % each element L rows
-        for alpha = neq*(nlead-1):1
+        for alpha = neq*(nlead-1):-1:1
             for beta = 1:neq
                 newB_R(alpha+neq,beta) = newB_R(alpha,beta);
             end

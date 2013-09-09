@@ -5,7 +5,6 @@
 
 function [phi] = makePhi(q,cof,nlag,nlead,neq)
 
-q
 % Calculate the H_0 Matrix, which is neq x neq
 H_0 = cof(:,neq*nlag+1:neq*(nlag+1));
 

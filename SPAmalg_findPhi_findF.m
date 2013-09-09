@@ -75,8 +75,15 @@ if (ia ~= 0)
    q = SPCopy_w(q,w,js,iq,qrows);
 end
 
-phi = makePhi(q,originalH,nlag,nlead,neq)
-F = makeF(phi,originalH,q,nlag,nlead,neq)
+phi = makePhi(q,originalH,nlag,nlead,neq);
+disp('phi = ');
+disp(' ');
+disp(phi);
+
+F = makeF(phi,originalH,q,nlag,nlead,neq);
+disp('F = ');
+disp(' ');
+disp(F);
 
 test = nexact+nnumeric+lgroots;
    if (test > qrows) aimcode = 3;
