@@ -1,9 +1,15 @@
 
 JC = javac
 JI = java
-OPTS = -target 1.1 -source 1.2 -classpath ../SPUtils -d ../SPUtils 
+OPTS =  -classpath ./ -d ./SPSolveUtils 
 
 ALLCLASS = SPSolve.class doCopy.class
+
+
+
+SPSolve.jar:	$(ALLCLASS)
+	(jar cvf /tmp/SPSolve.jar SPSolveUtils)
+	mv /tmp/SPSolve.jar ../lib
 
 
 
@@ -15,17 +21,11 @@ all:
 .SUFFIXES:  .java .class .jj
 
 .java.class:
+	mkdir -p SPSolveUtils
 	$(JC) $(OPTS) $<
 
-.jj.java:
-	$(JCCC) $<
 
 
 clean:
-	rm -rf ../lib ../SPUtils
-
-SPSolve.jar:	$(ALLCLASS)
-	(cd ../SPUtils; jar cvf /tmp/SPSolve.jar SPSolveUtils)
-	mv /tmp/SPSolve.jar ../lib
-
+	rm -rf ../lib ../SPSolveUtils
 
