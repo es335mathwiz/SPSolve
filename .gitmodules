@@ -1,0 +1,3 @@
+[submodule "parsers/modelEZ"]
+	path = parsers/modelEZ
+	url = https://github.com/es335mathwiz/modelEZ.git
