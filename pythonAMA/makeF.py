@@ -29,13 +29,13 @@ def makeF(phi,cof,q,nlag,nlead,neq):
     # Fill in the identity matrices in F 
     # Establish the veritcal index for inserting 1s into F
 
-    for i in range(1,neq*(nlead-1)+1):
+    for i in range(0,neq*(nlead-1)):
         
         # Establish the horizontal index for inserting 1s into F
-        j = i + neq
+        j = i + neq -1
     
         # Insert Identity values into F
-        F[i-1,j-1] = 1
+        F[i,j] = 1
         
     # Construct the B_R Matrix used in the last column of F 
     newB_R = numpy.matrix(numpy.zeros(shape=((neq*nlead,neq))))
@@ -62,9 +62,9 @@ def makeF(phi,cof,q,nlag,nlead,neq):
         
             # Update newB_R for the next matrix to be inserted by shifting down 
             # each element L rows
-            for alpha in range(neq*(nlead-1),0,-1):
-                for beta in range(1,neq+1):
-                    newB_R[alpha+neq-1,beta-1] = newB_R[alpha-1,beta-1]
+            for alpha in range(neq*(nlead-1)-1,-1,-1):
+                for beta in range(0,neq):
+                    newB_R[alpha+neq,beta] = newB_R[alpha,beta]
                 
             # Then, insert 0's into the newly emptied cells.
             newB_R[0:neq,0:neq] = numpy.matrix(numpy.zeros(shape=((neq,neg))))
