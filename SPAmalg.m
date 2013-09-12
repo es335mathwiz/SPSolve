@@ -98,12 +98,7 @@ if (ia ~= 0)
         aimcode=63; 
         return 
     end 
-    [w,rts,lgroots,flag_trouble]=SPEigensystem(a,uprbnd,min(length(js),qrows-iq+1));
-    if flag_trouble==1; 
-        disp('Problem in SPEIG'); 
-        aimcode=64;
-        return
-    end 
+    [w,rts,lgroots]=SPEigensystem(a,uprbnd,min(length(js),qrows-iq+1));
     q = SPCopy_w(q,w,js,iq,qrows);
 end
 

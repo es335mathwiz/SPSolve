@@ -1,4 +1,4 @@
-function [w,rts,lgroots,flag_trouble] = SPEigensystem(a,uprbnd,rowsLeft)
+function [w,rts,lgroots] = SPEigensystem(a,uprbnd,rowsLeft)
 %  [w,rts,lgroots] = SPEigensystem(a,uprbnd)
 %
 %  Compute the roots and the left eigenvectors of the companion

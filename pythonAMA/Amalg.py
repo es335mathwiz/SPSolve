@@ -103,13 +103,7 @@ def Amalg(h,neq,nlag,nlead,condn,uprbnd):
             print "A is NAN or INF"
             aimcode=63 
             return 
-        
-        w, rts, lgroots, flag_trouble = Eigensystem(a,uprbnd,min(length(js),qrows-iq+1))
-        if flag_trouble == 1: 
-            print "Problem in SPEIG" 
-            aimcode=64
-            return
-        
+        w, rts, lgroots = Eigensystem(a,uprbnd,min(length(js),qrows-iq+1))
         q = Copy_w(q,w,js,iq,qrows)
 
     test = nexact + nnumeric + lgroots

@@ -30,57 +30,7 @@
 import numpy
 import scipy
 
-def Exact_shift(h,q,iq,qrows,qcols,neq):
-
-    # Compute the exact shiftrights and store them in q.
-
-    hs = sparse(h)
-    nexact = 0
-    left   = 0:qcols
-    right  = qcols:qcols+neq
-    zerorows = list()
-    sumVector = numpy.absolute(hs(:,right).T).sum(axis=1)
-    for i in range(0,len(sumVector)):
-        if sumVector[i] == 0:
-            zerorows.append(i)
-
-    while any(zerorows) and iq <= qrows:
-        nz = length(zerorows)
-        q(iq+1:iq+nz,:) = hs(zerorows,left)
-        hs(zerorows,:)   = SPShiftright(hs(zerorows,:),neq)
-        iq     = iq + nz
-        nexact = nexact + nz
-        zerorows = find( sum(abs( hs(:,right).T ))==0 )
-        end
-        h=full(hs)
-        
-    return h, q, iq, nexact
-
-
-def Numeric_shift(h,q,iq,qrows,qcols,neq,condn):
-
-    # Compute the numeric shiftrights and store them in q.
-    
-    nnumeric = 0
-    left     = 1:qcols
-    right    = qcols+1:qcols+neq
-    
-    [Q,R,E]  = qr( h(:,right) )
-    zerorows = find( abs(diag(R)) <= condn )
-    
-    while( any(zerorows) && iq <= qrows ):
-        h=sparse(h)
-        Q=sparse(Q)
-        h = Q.T*h
-        nz = length(zerorows)
-        q(iq+1:iq+nz,:) = h(zerorows,left)
-        h(zerorows,:)   = SPShiftright( h(zerorows,:), neq )
-        iq       = iq + nz
-        nnumeric = nnumeric + nz
-        [Q,R,E] = qr( full(h(:,right)) )
-        zerorows = find( abs(diag(R)) <= condn )
-
-    return h, q, iq, nnumeric
+##########################################################################
 
 
 def Shiftright(x,n):
@@ -96,4 +46,71 @@ def Shiftright(x,n):
     y(:,right) = x(:,left)
     
     return y
+
+##########################################################################
+
+
+def Exact_shift(h,q,iq,qrows,qcols,neq):
+
+    # Compute the exact shiftrights and store them in q.
+
+    hs = scipy.sparse.csr_matrix(h)
+    nexact = 0
+    left   = 0:qcols
+    right  = qcols:qcols+neq
+    zerorows = list()
+    sumVector = numpy.absolute(hs(:,right).T).sum(axis=1)
+    for i in range(0,len(sumVector)):
+        if sumVector[i] == 0:
+            zerorows.append(i)
+
+    while len(zerorows) > 0  and iq <= qrows:
+        nz = len(zerorows)
+        q(iq:iq+nz,:) = hs(zerorows,left)
+        hs(zerorows,:) = Shiftright( hs(zerorows,:),neq )
+        iq = iq + nz
+        nexact = nexact + nz
+        zerorows = list()
+        newSumVector = numpy.absolute(hs(:,right).T).sum(axis=1)
+        for i in range(0,len(newSumVector)):
+            if newSumVector[i] == 0:
+                zerorows.append(i)
+        h = scipy.sparse.csr_matrix.todense(hs)
+        
+    return h, q, iq, nexact
+
+#########################################################################
+
+def Numeric_shift(h,q,iq,qrows,qcols,neq,condn):
+
+    # Compute the numeric shiftrights and store them in q.
+    
+    nnumeric = 0
+    left     = 0:qcols
+    right    = qcols:qcols+neq
+    
+    Q, R, P  = scipy.linalg.qr(h(:,right))
+    zerorows = list()
+    testVector = abs(numpy.diagonal(R))
+    for i in range(0,len(testVector)):
+        if testVector[i] <= condn:
+            zerorows.append(i)
+    
+    while len(zerorows) > 0 and iq <= qrows:
+        h = scipy.sparse.csr_matrix(h)
+        Q = scipy.sparse.csr_matrix(Q)
+        h = Q.T * h
+        nz = len(zerorows)
+        q(iq:iq+nz,:) = h(zerorows,left)
+        h(zerorows,:) = Shiftright( h(zerorows,:), neq )
+        iq = iq + nz
+        nnumeric = nnumeric + nz
+        Q, R, P  = scipy.linalg.qr(scipy.sparse.csr_matrix.todense(h(:,right)))
+        zerorows = list()
+        testVector = abs(numpy.diagonal(R))
+        for i in range(0,len(testVector)):
+            if testVector[i] <= condn:
+                zerorows.append(i)
+                
+    return h, q, iq, nnumeric
 
