@@ -1,3 +1,3 @@
 function res=SPModelezJavaParserQ
-methList=methods('modelezAim.Aim');
+methList=methods('modelezAMA.AMA');
 res=(length(methList)>0);

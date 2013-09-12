@@ -1,3 +1,3 @@
 function res=SPTrollJavaParserQ
-methList=methods('trollAim.Aim');
+methList=methods('trollAMA.AMA');
 res=(length(methList)>0);

@@ -1,3 +1,6 @@
 [submodule "parsers/modelEZ"]
 	path = parsers/modelEZ
 	url = https://github.com/es335mathwiz/modelEZ.git
+[submodule "parsers/troll"]
+	path = parsers/troll
+	url = https://github.com/es335mathwiz/troll.git

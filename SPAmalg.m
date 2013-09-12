@@ -1,6 +1,6 @@
-function [b,rts,ia,nexact,nnumeric,lgroots,aimcode] = ...
+function [b,rts,ia,nexact,nnumeric,lgroots,AMAcode] = ...
                         SPAmalg(h,neq,nlag,nlead,condn,uprbnd)
-%  [b,rts,ia,nexact,nnumeric,lgroots,aimcode] = ...
+%  [b,rts,ia,nexact,nnumeric,lgroots,AMAcode] = ...
 %                       SPAmalg(h,neq,nlag,nlead,condn,uprbnd)
 %
 %  Solve a linear perfect foresight model using the matlab eig
@@ -29,7 +29,7 @@ function [b,rts,ia,nexact,nnumeric,lgroots,aimcode] = ...
 %    nexact    Number of exact shiftrights.
 %    nnumeric  Number of numeric shiftrights.
 %    lgroots   Number of roots greater in modulus than uprbnd.
-%    aimcode     Return code: see function aimerr.
+%    AMAcode     Return code: see function AMAerr.
 
 % Original author: Gary Anderson
 % Original file downloaded from:
@@ -57,7 +57,7 @@ function [b,rts,ia,nexact,nnumeric,lgroots,aimcode] = ...
 % pages 472-489
 
 if(nlag<1 | nlead<1) 
-    error('Aim_eig: model must have at least one lag and one lead.');
+    error('AMA_eig: model must have at least one lag and one lead.');
 end
 
 % Initialization.
@@ -65,7 +65,7 @@ nexact   = 0;
 nnumeric = 0;
 lgroots  = 0;
 iq       = 0;
-aimcode    = 0;
+AMAcode    = 0;
 b=0;
 qrows = neq*nlead;
 qcols = neq*(nlag+nlead);
@@ -77,13 +77,13 @@ rts      = zeros(qcols,1);
 
 [h,q,iq,nexact] = SPExact_shift(h,q,iq,qrows,qcols,neq);
    if (iq>qrows) 
-      aimcode = 61;
+      AMAcode = 61;
       return;
    end
 
 [h,q,iq,nnumeric] = SPNumeric_shift(h,q,iq,qrows,qcols,neq,condn);
    if (iq>qrows) 
-      aimcode = 62;
+      AMAcode = 62;
       return;
    end
 
@@ -95,36 +95,32 @@ rts      = zeros(qcols,1);
 if (ia ~= 0)
     if any(any(isnan(a))) || any(any(isinf(a))) 
         disp('A is NAN or INF')
-        aimcode=63; 
+        AMAcode=63; 
         return 
     end 
-    [w,rts,lgroots,flag_trouble]=SPEigensystem(a,uprbnd,min(length(js),qrows-iq+1));
-    if flag_trouble==1; 
-        disp('Problem in SPEIG'); 
-        aimcode=64;
-        return
-    end 
+    [w,rts,lgroots]=SPEigensystem(a,uprbnd,min(length(js),qrows-iq+1));
+
     q = SPCopy_w(q,w,js,iq,qrows);
 end
 
 test = nexact+nnumeric+lgroots;
 if (test > qrows)
-    aimcode = 3;
+    AMAcode = 3;
 elseif (test < qrows)
-    aimcode = 4;
+    AMAcode = 4;
 end
 
 % If the right-hand block of q is invertible, compute the reduced form.
 
-if(aimcode==0)
+if(AMAcode==0)
     [nonsing,b]=SPReduced_form(q,qrows,qcols,bcols,neq,condn);
-    if ( nonsing && aimcode==0)
-        aimcode =  1;
-    elseif (~nonsing && aimcode==0)
-        aimcode =  5;
-    elseif (~nonsing && aimcode==3)
-        aimcode = 35;
-    elseif (~nonsing && aimcode==4)
-        aimcode = 45;
+    if ( nonsing && AMAcode==0)
+        AMAcode =  1;
+    elseif (~nonsing && AMAcode==0)
+        AMAcode =  5;
+    elseif (~nonsing && AMAcode==3)
+        AMAcode = 35;
+    elseif (~nonsing && AMAcode==4)
+        AMAcode = 45;
     end
 end;

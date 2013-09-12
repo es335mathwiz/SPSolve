@@ -5,10 +5,10 @@ testRes=[];
 cd(SPSolveDir);
 addpath(SPSolveDir);
 addpath([SPSolveTestDir 'testInstallation/'])
-testRes=SPParsersAvailableQ;
 testRes=[testRes testInstallation];
-addpath([SPSolveTestDir 'tryAimcode/'])
-testRes=[testRes tryAimcode];
+testRes=[testRes SPParsersAvailableQ];
+addpath([SPSolveTestDir 'tryAMAcode/'])
+testRes=[testRes tryAMAcode];
 if(all(testRes))
 disp('all tests successful')
 else

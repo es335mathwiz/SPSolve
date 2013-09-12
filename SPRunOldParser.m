@@ -8,16 +8,16 @@ if(strcmp('Windows_XP',theOs))
 dirNow=pwd;
 cd(dirnam);
  parsexpr = ['!',...
- SPSolvePreviousVersionDir, 'mdlez-aim ' dirnam,modnam  ]
+ SPSolvePreviousVersionDir, 'mdlez-AMA ' dirnam,modnam  ]
 cd(dirNow);
 end
 if(strcmp('Solaris',theOs))
  parsexpr = ['!', '(cd ' dirnam ';'...
- SPSolvePreviousVersionDir, 'mdlez-aim ' dirnam,modnam ')']
+ SPSolvePreviousVersionDir, 'mdlez-AMA ' dirnam,modnam ')']
 end
 if(strcmp('Linux',theOs))
  parsexpr = ['!','(cd ' dirnam ';'...
- SPSolvePreviousVersionDir, 'mdlez-aimLinux ' dirnam,modnam ')']
+ SPSolvePreviousVersionDir, 'mdlez-AMALinux ' dirnam,modnam ')']
 end
 %msgval=eval(parsexpr);
 

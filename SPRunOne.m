@@ -1,6 +1,6 @@
 function [varargout]=SPRunOne(oneVersionDir,dirnam,parnam,modnam)
 %more output args gets you more from the list
-%cofb,rts,ia,nex,nnum,lgrts,aimcode%[pgmUsed,theCofb]scof cof,neq,nlag,nlead,condn,uprbnd cofg cofh
+%cofb,rts,ia,nex,nnum,lgrts,AMAcode%[pgmUsed,theCofb]scof cof,neq,nlag,nlead,condn,uprbnd cofg cofh
 parserRetCode=0;
 oldPath=path;
 addpath(oneVersionDir);

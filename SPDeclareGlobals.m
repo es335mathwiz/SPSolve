@@ -15,5 +15,5 @@ global lgrts
 global dirnam 
 global modnam 
 global parnam
-global aimcode
+global AMAcode
 

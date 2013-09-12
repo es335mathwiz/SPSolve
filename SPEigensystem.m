@@ -1,4 +1,4 @@
-function [w,rts,lgroots,flag_trouble] = SPEigensystem(a,uprbnd,rowsLeft)
+function [w,rts,lgroots] = SPEigensystem(a,uprbnd,rowsLeft)
 %  [w,rts,lgroots] = SPEigensystem(a,uprbnd)
 %
 %  Compute the roots and the left eigenvectors of the companion
@@ -42,7 +42,7 @@ ws       = ws(:,k);
 %  Given a complex conjugate pair of vectors W = [w1,w2], there is a
 %  nonsingular matrix D such that W*D = real(W) + imag(W).  That is to
 %  say, W and real(W)+imag(W) span the same subspace, which is all
-%  that aim cares about. 
+%  that AMA cares about. 
 
 ws = real(ws) + imag(ws);
 

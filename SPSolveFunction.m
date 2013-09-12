@@ -1,11 +1,11 @@
 %
 %SPSolveFunction
-% Solve a linear rational expectations model with AIM.  
+% Solve a linear rational expectations model with AMA.  
 %function [cof, scof, cofb, param_, eqname_, endog_, 
 %eqtype_, vtype_, neq, nlag, nlead, rts, lgrts] = ... 
 %         SPSolve(dirnam, modnam, parnam)
 function [cof, scof, cofb, param_, eqname_, endog_,...
- eqtype_, vtype_, neq, nlag, nlead, rts, lgrts,aimcode] = ... 
+ eqtype_, vtype_, neq, nlag, nlead, rts, lgrts,AMAcode] = ... 
          SPSolveFunction(dirnam, modnam, parnam)
 cof=[];
  scof=[];
@@ -50,7 +50,7 @@ if(parserRetCode==0)
     p = [];
   end
 
-  % Numerical tolerances for aim
+  % Numerical tolerances for AMA
 
   epsi   = 2.2e-16;
   condn  = 1.e-10;
@@ -60,9 +60,9 @@ if(parserRetCode==0)
   % Construct structural coefficient matrix.
   % ---------------------------------------------------------------------
 
-  %  Run compute_aim_matrices.
+  %  Run compute_AMA_matrices.
 
-  eval([modnam,'_aim_matrices']);
+  eval([modnam,'_AMA_matrices']);
 
   % Construct cof matrix from cofg, cofh
 
@@ -72,10 +72,10 @@ if(parserRetCode==0)
   cof(1:rg,1:cg) = cofg;
   cof = cof + cofh;
 
-  [cofb,rts,ia,nex,nnum,lgrts,aimcode] = SPAmalg(cof,neq,nlag,nlead,condn,uprbnd);
+  [cofb,rts,ia,nex,nnum,lgrts,AMAcode] = SPAmalg(cof,neq,nlag,nlead,condn,uprbnd);
 
-  if aimcode>1,
-    disp(SPAimerr(aimcode));
+  if AMAcode>1,
+    disp(SPAMAerr(AMAcode));
   else
     scof = SPObstruct(cof,cofb,neq,nlag,nlead);
   end

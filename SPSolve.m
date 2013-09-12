@@ -1,6 +1,6 @@
 %
 %SPSolve
-% Solve a linear rational expectations model with AIM.  
+% Solve a linear rational expectations model with AMA.  
 %function [cof, scof, cofb, param_, eqname_, endog_, 
 %eqtype_, vtype_, neq, nlag, nlead, rts, lgrts] = ... 
 %         SPSolve(dirnam, modnam, parnam)
@@ -30,7 +30,7 @@ disp('%dirnam=xxx;')
 disp('%modnam=yyy;')
 disp('%parnam=zzz;')
 disp('[cof, scof, cofb, param_, eqname_,...')
-disp(' endog_, eqtype_, vtype_, neq, nlag, nlead, rts, lgrts,aimcode]=...')
+disp(' endog_, eqtype_, vtype_, neq, nlag, nlead, rts, lgrts,AMAcode]=...')
 disp('SPSolve(dirnam, modnam, parnam)')
 disp('%***********************************************')
 disp(' ')
@@ -53,7 +53,7 @@ cof=[];
  lgrts=[];
 
 [lcof, lscof, lcofb, lparam_, leqname_, lendog_,...
- leqtype_, lvtype_, lneq, lnlag, lnlead, lrts, llgrts,aimcode]=...
+ leqtype_, lvtype_, lneq, lnlag, lnlead, lrts, llgrts,AMAcode]=...
 SPSolveFunction(dirnam, modnam, parnam);
 
 
@@ -88,7 +88,7 @@ varargout{13}=llgrts;
 elseif(and(nargout==14,nargin==3))
 
 [lcof, lscof, lcofb, lparam_, leqname_, lendog_,...
- leqtype_, lvtype_, lneq, lnlag, lnlead, lrts, llgrts,aimcode]=...
+ leqtype_, lvtype_, lneq, lnlag, lnlead, lrts, llgrts,AMAcode]=...
 SPSolveFunction(varargin{1},varargin{2},varargin{3});
 varargout{1}=lcof;
 varargout{2}=lscof;
@@ -103,7 +103,7 @@ varargout{10}=lnlag;
 varargout{11}=lnlead;
 varargout{12}=lrts;
 varargout{13}=llgrts;
-varargout{14}=aimcode;
+varargout{14}=AMAcode;
 else
 
 helpStr=help('SPSolve');

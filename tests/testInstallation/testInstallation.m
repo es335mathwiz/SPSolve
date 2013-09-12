@@ -31,7 +31,7 @@ dirnam=[strcat(SPSolveTestDir,'testInstallation/') ];
 %unix(['rm ' dirnam '*data.m']);
 %unix(['rm ' dirnam '*matrices.m']);
 end
-SPEraseFile([dirnam,'example7_aim_data.m' ]);
+SPEraseFile([dirnam,'example7_AMA_data.m' ]);
 
 [newUsed,newInParm,newInCof,newOutParm,newRts,newCofb,newScof]=...
 		SPRunOne(SPSolveDir,dirnam,parnam,modnam);
@@ -60,7 +60,7 @@ else
 theDir=[SPSolveTestDir 'testInstallation/'];
 end
 
-SPEraseFile([theDir,'SPTrollPrimer_aim_data.m' ]);
+SPEraseFile([theDir,'SPTrollPrimer_AMA_data.m' ]);
  [nparserRetCode,...
       nparam_,nnp,nmodname,nneq,nnlag,nnlead,neqname_,neqtype_,nendog_,ndelay_,nvtype_]=...
     SPParser(theDir,'SPTrollPrimer');
@@ -76,7 +76,7 @@ disp('testInstallation:SPSolve old style script call')
 %SPDeclareGlobals;
 
 
-SPEraseFile([theDir,'example7_aim_data.m' ]);
+SPEraseFile([theDir,'example7_AMA_data.m' ]);
 
 clear dirnam modnam parnam;
 SPDeclareGlobals

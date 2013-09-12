@@ -1,24 +1,25 @@
-function ...
-    [parserRetCode,...
-      param_,np,modname,neq,nlag,nlead,eqname_,eqtype_,endog_,delay_,vtype_]=...
-    SPParser(dirnam,modnam)
-global SPObnoxiouslyLongUniqueModelezName;
-global SPObnoxiouslyLongUniqueTrollName;
-global SPObnoxiouslyLongUniqueParserRunQ;
-% Parser setup for modelez syntax models
-if(and(isempty(SPObnoxiouslyLongUniqueParserRunQ),...
-  exist('modelezAim.Aim','class')==8))
-      'found Aim on system classpath'
-  disp('initializing parsers');
-  parsexpr =...
-      'SPObnoxiouslyLongUniqueModelezName=modelezAim.Aim(java.lang.System.in);';
-  %	['modelezAim.Aim.notMain('...
-  %	  char(39) SPSolveDir 'SPModelezPrimer' char(39) ')']
+function ...  
+[parserRetCode,...
+    param_,np,modname,neq,nlag,nlead,eqname_,eqtype_,endog_,delay_,vtype_]=...
+    SPParser(dirnam,modnam) 
+	global SPObnoxiouslyLongUniqueModelezName;
+    global SPObnoxiouslyLongUniqueTrollName; 
+	global SPObnoxiouslyLongUniqueParserRunQ; 
+% Parser setup for modelez    syntax models
+    if(and(isempty(SPObnoxiouslyLongUniqueParserRunQ),...
+    exist('gov.frb.ma.msu.toMatlab.AMAtoMatlab','class')==8))
+    'found AMA on system classpath' 
+	disp('initializing parsers');
+    parsexpr =...
+   [ 'SPObnoxiouslyLongUniqueModelezName='...
+	'gov.frb.ma.msu.toMatlab.AMAtoMatlab(java.lang.System.in);'];
+    % ['gov.frb.ma.msu.toMatlab.AMAtoMatlab.notMain('...  
+% char(39) SPSolveDir    'SPModelezPrimer' char(39) ')']
   
   eval(parsexpr);
   parsexpr =...
-      'SPObnoxiouslyLongUniqueTrollName=trollAim.Aim(java.lang.System.in);';
-  %	['trollAim.Aim.notMain('...
+      'SPObnoxiouslyLongUniqueTrollName=gov.frb.ma.msu.AMA(java.lang.System.in);';
+  %	['gov.frb.ma.msu.AMA.notMain('...
   %	  char(39) SPSolveDir 'SPTrollPrimer' char(39) ')']
   eval(parsexpr);
   SPObnoxiouslyLongUniqueParserRunQ=1;
@@ -41,18 +42,18 @@ else
     end
     SPObnoxiouslyLongUniqueParserRunQ=1;
     
-    if(exist('modelezAim.Aim','class')==8)
-      %    'found Aim on classpath'
+    if(exist('gov.frb.ma.msu.toMatlab.AMAtoMatlab','class')==8)
+      %    'found AMA on classpath'
       disp('initializing parsers');
       parsexpr =...
-	  'SPObnoxiouslyLongUniqueModelezName=modelezAim.Aim(java.lang.System.in);';
-      %	['modelezAim.Aim.notMain('...
+	  'SPObnoxiouslyLongUniqueModelezName=gov.frb.ma.msu.toMatlab.AMAtoMatlab(java.lang.System.in);';
+      %	['gov.frb.ma.msu.toMatlab.AMAtoMatlab.notMain('...
       %	  char(39) SPSolveDir 'SPModelezPrimer' char(39) ')']
       
       eval(parsexpr);
       parsexpr =...
-	  'SPObnoxiouslyLongUniqueTrollName=trollAim.Aim(java.lang.System.in);';
-      %	['trollAim.Aim.notMain('...
+	  'SPObnoxiouslyLongUniqueTrollName=gov.frb.ma.msu.AMA(java.lang.System.in);';
+      %	['gov.frb.ma.msu.AMA.notMain('...
       %	  char(39) SPSolveDir 'SPTrollPrimer' char(39) ')']
       eval(parsexpr);
     end;
@@ -65,8 +66,8 @@ parserRetCode=0;
 msgval=[];
 parseflag=1;
 if(parseflag)
-  dataFile=[ modnam '_aim_data.m'];
-  matricesFile=[modnam '_aim_matrices.m'];
+  dataFile=[ modnam '_AMA_data.m'];
+  matricesFile=[modnam '_AMA_matrices.m'];
   %  disp('SPParser ignores global parse flag variable');
   %  disp('SPParser does not parse file if parse output exists');
   %  disp('and is newer than source');
@@ -93,14 +94,14 @@ end
 if(exist([ dirnam dataFile ]))
   if(targetFileNewerThanSrcFile(dirnam,dataFile,modnam))
     
-    % Run compute_aim_data:
+    % Run compute_AMA_data:
     if(parserRetCode==0)
       
       addpath(dirnam);
       
       
       [param_,np,modname,neq,nlag,nlead,eqname_,eqtype_,endog_,delay_,vtype_] = ...
-	  eval([modnam,'_aim_data']);
+	  eval([modnam,'_AMA_data']);
       
       if(parseflag)
 	seq  = find(eqtype_==0);
@@ -150,8 +151,8 @@ end
 
 
 function eRes=actuallyRunParser(dirnam,modnam)
-SPCopyFile([SPSolveDir 'SPAimDataStub.m'],...
-    [dirnam modnam,'_aim_data.m']);
+SPCopyFile([SPSolveDir 'SPAMADataStub.m'],...
+    [dirnam modnam,'_AMA_data.m']);
 modFile=[dirnam,modnam];
 theLang=SPModelLanguage(modFile);
 if(strcmp(theLang,'troll'))
@@ -168,16 +169,16 @@ global SPObnoxiouslyLongUniqueModelezName;
 global SPObnoxiouslyLongUniqueTrollName;
 global SPObnoxiouslyLongUniqueParserRunQ;
 
-if(exist('trollAim.Aim','class')==8)
-  %  disp('found Aim on classpath')
+if(exist('gov.frb.ma.msu.AMA','class')==8)
+  %  disp('found AMA on classpath')
   parsexpr = ...
       ['SPObnoxiouslyLongUniqueTrollName.runParser(' char(39) modFile char(39) ')'];
   msgval=eval(parsexpr);
 else
   
-  disp('did not find Aim on matlab classpath, trying system call to java')
+  disp('did not find AMA on matlab classpath, trying system call to java')
   parsexpr = ['java -classpath ' char(34) SPTrollParserDir  char(34) ...
-	' trollAim.Aim ',char(34) modFile char(34)];
+	' gov.frb.ma.msu.AMA ',char(34) modFile char(34)];
   msgval=unix(parsexpr);
 end;
 
@@ -186,17 +187,17 @@ global SPObnoxiouslyLongUniqueModelezName;
 global SPObnoxiouslyLongUniqueTrollName;
 global SPObnoxiouslyLongUniqueParserRunQ;
 
-if(exist('modelezAim.Aim','class')==8)
-  %  'found Aim on classpath'
+if(exist('gov.frb.ma.msu.toMatlab.AMAtoMatlab','class')==8)
+  %  'found AMA on classpath'
   parsexpr = [...
 	'SPObnoxiouslyLongUniqueModelezName.runParser('...
 	char(39) modFile char(39) ')'];
   msgval=eval(parsexpr);
 else
   
-  disp('did not find Aim on classpath, trying system call to java');
+  disp('did not find AMA on classpath, trying system call to java');
   parsexpr = ['java -classpath '  char(34) SPModelezParserDir  char(34) ...
-	' modelezAim.Aim ', char(34) modFile char(34)];
+	' gov.frb.ma.msu.toMatlab.AMAtoMatlab ', char(34) modFile char(34)];
   msgval=unix(parsexpr);
 end;
 mlock;
