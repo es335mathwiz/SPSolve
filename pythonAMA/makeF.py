@@ -3,7 +3,7 @@
 # Created by: Jason Sockin
 # Date: September 10, 2013
 
-# Import matrix subpackage from the numpy package
+# Import the numpy package
 import numpy
 
 def makeF(phi,cof,q,nlag,nlead,neq):
@@ -30,10 +30,8 @@ def makeF(phi,cof,q,nlag,nlead,neq):
     # Establish the veritcal index for inserting 1s into F
 
     for i in range(0,neq*(nlead-1)):
-        
         # Establish the horizontal index for inserting 1s into F
         j = i + neq -1
-    
         # Insert Identity values into F
         F[i,j] = 1
         
@@ -45,7 +43,6 @@ def makeF(phi,cof,q,nlag,nlead,neq):
 
     # Insert B_R^theta into newB_R for theta from 1 to theta_1
     for a in range(1,nlead):
-   
         temp = B_R[neq*(a-1):neq*a,:]
         newB_R[neq*a:neq*(a+1),:] = temp
         
@@ -54,12 +51,10 @@ def makeF(phi,cof,q,nlag,nlead,neq):
     # Calculate the final row of matrices in F by looping over the values
     # from 1 to nlead.
     for k in range(nlead,0,-1):
-   
         # Calculate the matrix to be entered into F and enter it
         newEntry = -phi * H_plus * newB_R
         F[neq*(nlead-1):neq*nlead,neq*(k-1):neq*k] = newEntry
         if k > 1:
-        
             # Update newB_R for the next matrix to be inserted by shifting down 
             # each element L rows
             for alpha in range(neq*(nlead-1)-1,-1,-1):
