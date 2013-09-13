@@ -1,5 +1,3 @@
-function [b,rts,ia,nexact,nnumeric,lgroots,aimcode] = ...
-                        SPAmalg(h,neq,nlag,nlead,condn,uprbnd)
 %  [b,rts,ia,nexact,nnumeric,lgroots,aimcode] = ...
 %                       SPAmalg(h,neq,nlag,nlead,condn,uprbnd)
 %
@@ -31,31 +29,11 @@ function [b,rts,ia,nexact,nnumeric,lgroots,aimcode] = ...
 %    lgroots   Number of roots greater in modulus than uprbnd.
 %    aimcode     Return code: see function aimerr.
 
-% Original author: Gary Anderson
-% Original file downloaded from:
-% http://www.federalreserve.gov/Pubs/oss/oss4/code.html
-% Adapted for Dynare by Dynare Team, in order to deal
-% with infinite or nan values.
-%
-% This code is in the public domain and may be used freely.
-% However the authors would appreciate acknowledgement of the source by
-% citation of any of the following papers:
-%
-% Anderson, G. and Moore, G.
-% "A Linear Algebraic Procedure for Solving Linear Perfect Foresight
-% Models."
-% Economics Letters, 17, 1985.
-%
-% Anderson, G.
-% "Solving Linear Rational Expectations Models: A Horse Race"
-% Computational Economics, 2008, vol. 31, issue 2, pages 95-113
-%
-% Anderson, G.
-% "A Reliable and Computationally Efficient Algorithm for Imposing the
-% Saddle Point Property in Dynamic Models"
-% Journal of Economic Dynamics and Control, 2010, vol. 34, issue 3,
-% pages 472-489
+function [b,rts,ia,nexact,nnumeric,lgroots,aimcode] = ...
+                        SPAmalg_findPhi_findF(h,neq,nlag,nlead,condn,uprbnd)
 
+originalH = h;
+                    
 if(nlag<1 | nlead<1) 
     error('Aim_eig: model must have at least one lag and one lead.');
 end
@@ -93,33 +71,33 @@ rts      = zeros(qcols,1);
 [a,ia,js] = SPBuild_a(h,qcols,neq);
 
 if (ia ~= 0)
-    if any(any(isnan(a))) || any(any(isinf(a))) 
-        disp('A is NAN or INF')
-        aimcode=63; 
-        return 
-    end 
-    [w,rts,lgroots]=SPEigensystem(a,uprbnd,min(length(js),qrows-iq+1));
-    q = SPCopy_w(q,w,js,iq,qrows);
+   [w,rts,lgroots] = SPEigensystem(a,uprbnd);
+   q = SPCopy_w(q,w,js,iq,qrows);
 end
 
+phi = SPmakePhi(q,originalH,nlag,nlead,neq);
+disp('phi = ');
+disp(' ');
+disp(phi);
+
+F = SPmakeF(phi,originalH,q,nlag,nlead,neq);
+disp('F = ');
+disp(' ');
+disp(F);
+
 test = nexact+nnumeric+lgroots;
-if (test > qrows)
-    aimcode = 3;
-elseif (test < qrows)
-    aimcode = 4;
-end
+   if (test > qrows) aimcode = 3;
+   elseif (test < qrows) aimcode = 4;
+   end
 
 % If the right-hand block of q is invertible, compute the reduced form.
 
 if(aimcode==0)
-    [nonsing,b]=SPReduced_form(q,qrows,qcols,bcols,neq,condn);
-    if ( nonsing && aimcode==0)
-        aimcode =  1;
-    elseif (~nonsing && aimcode==0)
-        aimcode =  5;
-    elseif (~nonsing && aimcode==3)
-        aimcode = 35;
-    elseif (~nonsing && aimcode==4)
-        aimcode = 45;
-    end
+[nonsing,b] = SPReduced_form(q,qrows,qcols,bcols,neq,condn);
+
+if ( nonsing & aimcode==0) aimcode =  1;
+elseif (~nonsing & aimcode==0) aimcode =  5;
+elseif (~nonsing & aimcode==3) aimcode = 35;
+elseif (~nonsing & aimcode==4) aimcode = 45;
+end
 end;
