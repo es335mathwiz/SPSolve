@@ -33,7 +33,7 @@ def copyW(q,w,js,iq,qrows):
     
     if iq < qrows:
         lastrows = range(iq,qrows+1)
-        wrows = 0:len(lastrows)
+        wrows = range(0,len(lastrows))
         q[lastrows-1,js-1] = w[:,wrows-1].T
 
     return q

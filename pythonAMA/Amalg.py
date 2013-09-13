@@ -3,11 +3,13 @@ import numpy
 
 # Import necessary user-defined functions
 from Shifts import Exact_shift, Numeric_shift
-from Build_a import Build_a
+from buildA import buildA
 from Eigensystem import Eigensystem
-from Copy_w import Copy_w
-from Reduced_form import Reduced_form
+from copyW import copyW
+from reducedForm import reducedForm
 from checkA import existsNaN, existsInf
+from makePhi import makePhi
+from makeF import makeF
 
 def Amalg(h,neq,nlag,nlead,condn,uprbnd):
 
@@ -80,6 +82,7 @@ def Amalg(h,neq,nlag,nlead,condn,uprbnd):
     bcols = neq*nlag
     q = numpy.matrix(numpy.zeros(shape=((qrows,qcols))))
     rts = numpy.matrix(numpy.zeros(shape=((qcols,1))))
+    originalH = h
 
     # Compute the auxiliary initial conditions and store them in q.
 
@@ -111,6 +114,11 @@ def Amalg(h,neq,nlag,nlead,condn,uprbnd):
         aimcode = 3
     elif test < qrows:
         aimcode = 4
+
+    phi = makePhi(q,originalH,nlag,nlead,neq)
+    print phi
+    F = makeF(phi,originalH,nlag,nlead,neq)
+    print F
 
     # If the right-hand block of q is invertible, compute the reduced form.
 

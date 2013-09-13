@@ -1,6 +1,5 @@
 # import numpy and scipy packages
-import numpy
-import scipy
+import numpy, scipy
 
 def Eigensystem(a,uprbnd,rowsLeft):
 
@@ -39,7 +38,7 @@ def Eigensystem(a,uprbnd,rowsLeft):
     rts = sorted(rts, reverse = True)
     
     ws = scipy.sparse.csr_matrix(w)
-    ws = ws(:,k)
+    ws = ws[:,k]
     
     #  Given a complex conjugate pair of vectors W = [w1,w2], there is a
     #  nonsingular matrix D such that W*D = real(W) + imag(W).  That is to
@@ -48,7 +47,7 @@ def Eigensystem(a,uprbnd,rowsLeft):
     
     ws = ws.real + ws.imag
     
-    lgroots = sum(numpy.absolute(rts) > uprbnd)
+    lgroots = sum(abs(rts) > uprbnd)
     
     w=scipy.sparse.csr_matrix.todense(ws)
     

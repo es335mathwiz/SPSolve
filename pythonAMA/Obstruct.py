@@ -1,6 +1,5 @@
 # Import the numpy and scipy packages
-import numpy
-import scipy
+import numpy, scipy
 from Shifts import Shiftright
 
 def Obstruct(cof,cofb,neq,nlag,nlead):
@@ -51,7 +50,7 @@ def Obstruct(cof,cofb,neq,nlag,nlead):
     q = numpy.matrix(numpy.zeros(shape=((neq*nlead,neq*(nlag+nlead)))))
     rc, cc = cofb.shape
     qs = scipy.sparse.csr_matrix(q)
-    qs(0:rc,0:cc) = scipy.sparse.csr_matrix(cofb)
+    qs[0:rc,0:cc] = scipy.sparse.csr_matrix(cofb)
     qcols = neq*(nlag+nlead)
     
     if nlead > 1: 
@@ -61,18 +60,18 @@ def Obstruct(cof,cofb,neq,nlag,nlead):
             for j in range(0,len(rows)):
                 rows[j] = rows[j] + i*neq
                 shiftRows[j] = rows[j] - neq
-            qs(rows,:) = Shiftright( qs(shiftRows,:), neq )
+            qs[rows,:] = Shiftright( qs[shiftRows,:], neq )
 
     l = range(0,neq*nlag)
     r = range(neq*nlag,neq*(nlag+nlead))
 
-    qs(:,l) = - qs(:,r).I * qs(:,l)
+    qs[:,l] = -qs[:,r].I * qs[:,l]
 
     minus = 0:neq*(nlag+1)
     plus  = neq*(nlag+1):neq*(nlag+1+nlead)
     
     cofs = scipy.sparse.csr_matrix(cof)
-    scof(:,neq:neq*(nlag+1)) = cofs(:,plus) * qs(:,l)
-    scof = scof + cofs(:,minus)
+    scof[:,neq:neq*(nlag+1)] = cofs[:,plus] * qs[:,l]
+    scof = scof + cofs[:,minus]
     
     return scof
