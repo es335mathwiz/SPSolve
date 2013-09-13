@@ -100,6 +100,7 @@ if (ia ~= 0)
     end 
     [w,rts,lgroots]=SPEigensystem(a,uprbnd,min(length(js),qrows-iq+1));
 
+
     q = SPCopy_w(q,w,js,iq,qrows);
 end
 

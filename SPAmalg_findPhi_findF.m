@@ -75,12 +75,12 @@ if (ia ~= 0)
    q = SPCopy_w(q,w,js,iq,qrows);
 end
 
-phi = makePhi(q,originalH,nlag,nlead,neq);
+phi = SPmakePhi(q,originalH,nlag,nlead,neq);
 disp('phi = ');
 disp(' ');
 disp(phi);
 
-F = makeF(phi,originalH,q,nlag,nlead,neq);
+F = SPmakeF(phi,originalH,q,nlag,nlead,neq);
 disp('F = ');
 disp(' ');
 disp(F);
