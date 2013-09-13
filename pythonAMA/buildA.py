@@ -1,5 +1,7 @@
 # import numpy and scipy packages
-import numpy, scipy
+from numpy import * 
+from scipy import *
+from scipy.sparse import *
 
 def buildA(h,qcols,neq):
 
@@ -33,18 +35,18 @@ def buildA(h,qcols,neq):
     
     left  = range(0,qcols)
     right = range(qcols,qcols+neq)
-    hs = scipy.sparse.csr_matrix(h)
+    hs = csr_matrix(h)
     a0 = hs[:,right]
     hs[:,left] = -hs[:,right].I * hs[:,left]
     
     #  Build the big transition matrix.
     
-    a = numpy.matrix(numpy.zeros(shape=((qcols,qcols))))
+    a = matrix(zeros(shape=((qcols,qcols))))
     
     if qcols > neq:
         eyerows = range(0,qcols-neq)
         eyecols = range(neq,qcols)
-        a[eyerows,eyecols] = numpy.eye(qcols-neq)
+        a[eyerows,eyecols] = eye(qcols-neq)
     
     hrows = range(qcols-neq,qcols)
     a[hrows,:] = hs[:,left]
@@ -62,9 +64,9 @@ def buildA(h,qcols,neq):
             zerocols.append(i)
 
     while len(zerocols) > 0:
-        a = numpy.delete(a,zerocols,1)
-        a = numpy.delete(a,zerocols,0)
-        js = numpy.delete(js,zerocols)
+        a = delete(a,zerocols,1)
+        a = delete(a,zerocols,0)
+        js = delete(js,zerocols)
         zerocols = list()
         sumVector = abs(a).sum(axis=0)
         for i in range(0,len(sumVector)):

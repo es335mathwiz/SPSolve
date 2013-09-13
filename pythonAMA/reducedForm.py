@@ -1,5 +1,8 @@
 # import numpy and scipy packages
-import numpy, scipy
+from numpy import *
+from scipy import *
+from scipy.sparse import *
+from numpy.linalg import *
 
 def reducedForm(q,qrows,qcols,bcols,neq,condn):
     
@@ -29,14 +32,14 @@ def reducedForm(q,qrows,qcols,bcols,neq,condn):
     # Journal of Economic Dynamics and Control, 2010, vol. 34, issue 3,
     # pages 472-489
     
-    qs = scipy.sparse.csr_matrix(q)
+    qs = csr_matrix(q)
     left = range(0,qcols-qrows)
     right = range(qcols-qrows,qcols)
-    nonsing = 1/numpy.linalg.cond(scipy.sparse.csr_matrix.todense(qs[:,right])) > condn
+    nonsing = 1/cond(csr_matrix(qs[:,right]).todense()) > condn
     if nonsing:
         qs[:,left] = -qs[:,right].I * qs[:,left]
         b = qs[0:neq,0:bcols]
-        b = scipy.sparse.csr_matrix.todense(b)
+        b = csr_matrix(b).todense()
     else:  
         # rescale by dividing row by maximal qr element
         # inverse condition number small, rescaling
@@ -45,13 +48,13 @@ def reducedForm(q,qrows,qcols,bcols,neq,condn):
         for i in range(0,len(themax)):
             temp = 1 / themax[i]
             oneoverVector.append(temp)
-        oneover = numpy.diag(oneoverVector)
+        oneover = diag(oneoverVector)
         productMatrixRight = oneover * qs[:,right]
-        nonsing = 1/numpy.linalg.cond(scipy.sparse.csr_matrix.todense(productMatrixRight)) > condn
+        nonsing = 1/cond(csr_matrix(productMatrixRight).todense()) > condn
         if nonsing:
             productMatrixLeft = oneover * qs[:,left]
             qs[:,left] = -productMatrixRight.I * productMatrixLeft
             b = qs[0:neq,0:bcols]
-            b = scipy.sparse.csr_matrix.todense(b)
+            b = csr_matrix(b).todense()
 
     return nonsing, b

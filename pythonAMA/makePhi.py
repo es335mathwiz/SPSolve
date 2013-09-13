@@ -4,12 +4,12 @@
 # Date: September 10, 2013
 
 # Import the numpy package
-import numpy
+from numpy import *
 
 def makePhi(q,cof,nlag,nlead,neq):
     
     # Fix the size of the Phi Matrix, which is neq x neq
-    phi = numpy.matrix(numpy.zeros(shape=((neq,neq))))
+    phi = matrix(zeros(shape=((neq,neq))))
 
     # Calculate the H_0 Matrix, which is neq x neq
     H_0 = cof[:,neq*nlag:neq*(nlag+1)]

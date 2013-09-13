@@ -4,12 +4,12 @@
 # Date: September 10, 2013
 
 # Import the numpy package
-import numpy
+from numpy import *
 
 def makeF(phi,cof,q,nlag,nlead,neq):
 
     # Fix the size of the F Matrix, which is nlead*neq x nlead*neq
-    F = numpy.matrix(numpy.zeros(shape=((nlead*neq,nlead*neq))))
+    F = matrix(zeros(shape=((nlead*neq,nlead*neq))))
 
     # Calculate the H_+ Matrix, which is nlead*neq x neq
     H_plus = cof[:,neq*(nlag+1):neq*(nlag+nlead+1)]
@@ -36,10 +36,10 @@ def makeF(phi,cof,q,nlag,nlead,neq):
         F[i,j] = 1
         
     # Construct the B_R Matrix used in the last column of F 
-    newB_R = numpy.matrix(numpy.zeros(shape=((neq*nlead,neq))))
+    newB_R = matrix(zeros(shape=((neq*nlead,neq))))
 
     # Insert Identity matrix into first element of newB_R
-    newB_R[0:neq,0:neq] = numpy.eye(neq)
+    newB_R[0:neq,0:neq] = eye(neq)
 
     # Insert B_R^theta into newB_R for theta from 1 to theta_1
     for a in range(1,nlead):
@@ -62,7 +62,7 @@ def makeF(phi,cof,q,nlag,nlead,neq):
                     newB_R[alpha+neq,beta] = newB_R[alpha,beta]
                 
             # Then, insert 0's into the newly emptied cells.
-            newB_R[0:neq,0:neq] = numpy.matrix(numpy.zeros(shape=((neq,neg))))
+            newB_R[0:neq,0:neq] = matrix(zeros(shape=((neq,neg))))
                 
     return F
 

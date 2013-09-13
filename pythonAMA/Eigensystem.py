@@ -1,5 +1,8 @@
 # import numpy and scipy packages
-import numpy, scipy
+from numpy import *
+from scipy import *
+from scipy.sparse import *
+from numpy.linalg import *
 
 def Eigensystem(a,uprbnd,rowsLeft):
 
@@ -32,12 +35,12 @@ def Eigensystem(a,uprbnd,rowsLeft):
     # Journal of Economic Dynamics and Control, 2010, vol. 34, issue 3,
     # pages 472-489
 
-    rts, w = linalg.eig(a.T)
+    rts, w = eig(a.T)
     mag = sorted(-abs(rts))
     k = range(0,len(mag))
     rts = sorted(rts, reverse = True)
     
-    ws = scipy.sparse.csr_matrix(w)
+    ws = csr_matrix(w)
     ws = ws[:,k]
     
     #  Given a complex conjugate pair of vectors W = [w1,w2], there is a
@@ -49,6 +52,6 @@ def Eigensystem(a,uprbnd,rowsLeft):
     
     lgroots = sum(abs(rts) > uprbnd)
     
-    w=scipy.sparse.csr_matrix.todense(ws)
+    w = csr_matrix(ws).todense()
     
     return w, rts, lgroots

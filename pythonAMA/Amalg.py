@@ -1,8 +1,8 @@
 # Import the numpy package
-import numpy
+from numpy import *
 
 # Import necessary user-defined functions
-from Shifts import Exact_shift, Numeric_shift
+from Shifts import exactShift, numericShift
 from buildA import buildA
 from Eigensystem import Eigensystem
 from copyW import copyW
@@ -80,18 +80,18 @@ def Amalg(h,neq,nlag,nlead,condn,uprbnd):
     qrows = neq*nlead
     qcols = neq*(nlag+nlead)
     bcols = neq*nlag
-    q = numpy.matrix(numpy.zeros(shape=((qrows,qcols))))
-    rts = numpy.matrix(numpy.zeros(shape=((qcols,1))))
+    q = matrix(zeros(shape=((qrows,qcols))))
+    rts = matrix(zeros(shape=((qcols,1))))
     originalH = h
 
     # Compute the auxiliary initial conditions and store them in q.
 
-    h, q, iq, nexact = Exact_shift(h,q,iq,qrows,qcols,neq)
+    h, q, iq, nexact = exactShift(h,q,iq,qrows,qcols,neq)
     if iq > qrows: 
         aimcode = 61
         return
 
-    h, q, iq, nnumeric = Numeric_shift(h,q,iq,qrows,qcols,neq,condn)
+    h, q, iq, nnumeric = numericShift(h,q,iq,qrows,qcols,neq,condn)
     if iq > qrows: 
         aimcode = 62
         return
@@ -99,7 +99,7 @@ def Amalg(h,neq,nlag,nlead,condn,uprbnd):
     #  Build the companion matrix.  Compute the stability conditions, and
     #  combine them with the auxiliary initial conditions in q.  
 
-    a, ia, js = Build_a(h,qcols,neq)
+    a, ia, js = buildA(h,qcols,neq)
 
     if ia != 0:
         if existsNaN(a) or existsInf(a) : 
@@ -123,7 +123,7 @@ def Amalg(h,neq,nlag,nlead,condn,uprbnd):
     # If the right-hand block of q is invertible, compute the reduced form.
 
     if aimcode == 0:
-        nonsing, b = Reduced_form(q,qrows,qcols,bcols,neq,condn)
+        nonsing, b = reducedForm(q,qrows,qcols,bcols,neq,condn)
     
     if nonsing and aimcode == 0:
         aimcode =  1

@@ -27,7 +27,9 @@
 
 
 # Import the numpy and scipy packages
-import numpy, scipy
+from numpy import *
+from scipy import *
+from scipy.sparse import *
 
 ##########################################################################
 
@@ -41,7 +43,7 @@ def Shiftright(x,n):
     left  = range(0,cols-n)  
     right = range(n,cols) 
     
-    y = numpy.matrix(numpy.zeros(shape=((rows,cols))))
+    y = matrix(zeros(shape=((rows,cols))))
     y[:,right] = x[:,left]
     
     return y
@@ -49,11 +51,11 @@ def Shiftright(x,n):
 ##########################################################################
 
 
-def Exact_shift(h,q,iq,qrows,qcols,neq):
+def exactShift(h,q,iq,qrows,qcols,neq):
 
     # Compute the exact shiftrights and store them in q.
 
-    hs = scipy.sparse.csr_matrix(h)
+    hs = csr_matrix(h)
     nexact = 0
     left   = range(0,qcols)
     right  = range(qcols,qcols+neq)
@@ -74,13 +76,13 @@ def Exact_shift(h,q,iq,qrows,qcols,neq):
         for i in range(0,len(newSumVector)):
             if newSumVector[i] == 0:
                 zerorows.append(i)
-        h = scipy.sparse.csr_matrix.todense(hs)
+        h = csr_matrix(hs).todense()
         
     return h, q, iq, nexact
 
 #########################################################################
 
-def Numeric_shift(h,q,iq,qrows,qcols,neq,condn):
+def numericShift(h,q,iq,qrows,qcols,neq,condn):
 
     # Compute the numeric shiftrights and store them in q.
     
@@ -90,23 +92,23 @@ def Numeric_shift(h,q,iq,qrows,qcols,neq,condn):
     
     Q, R, P  = scipy.linalg.qr(h[:,right])
     zerorows = list()
-    testVector = abs(numpy.diagonal(R))
+    testVector = abs(diagonal(R))
     for i in range(0,len(testVector)):
         if testVector[i] <= condn:
             zerorows.append(i)
     
     while len(zerorows) > 0 and iq <= qrows:
-        h = scipy.sparse.csr_matrix(h)
-        Q = scipy.sparse.csr_matrix(Q)
+        h = csr_matrix(h)
+        Q = csr_matrix(Q)
         h = Q.T * h
         nz = len(zerorows)
         q[iq:iq+nz,:] = h[zerorows,left]
         h[zerorows,:] = Shiftright( h[zerorows,:], neq )
         iq = iq + nz
         nnumeric = nnumeric + nz
-        Q, R, P  = scipy.linalg.qr(scipy.sparse.csr_matrix.todense(h[:,right]))
+        Q, R, P  = scipy.linalg.qr(csr_matrix(h[:,right]).todense())
         zerorows = list()
-        testVector = abs(numpy.diagonal(R))
+        testVector = abs(diagonal(R))
         for i in range(0,len(testVector)):
             if testVector[i] <= condn:
                 zerorows.append(i)

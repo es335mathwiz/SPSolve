@@ -1,5 +1,7 @@
 # Import the numpy and scipy packages
-import numpy, scipy
+from numpy import * 
+from scipy import *
+from scipy.sparse import *
 from Shifts import Shiftright
 
 def Obstruct(cof,cofb,neq,nlag,nlead):
@@ -45,12 +47,12 @@ def Obstruct(cof,cofb,neq,nlag,nlead):
 
     # Append the negative identity to cofb
 
-    cofb = numpy.concatenate((cofb.T,-numpy.eye(neq))).T
-    scof = numpy.matrix(numpy.zeros(shape=((neq,neq*(nlag+1)))))
-    q = numpy.matrix(numpy.zeros(shape=((neq*nlead,neq*(nlag+nlead)))))
+    cofb = concatenate((cofb.T,-eye(neq))).T
+    scof = matrix(zeros(shape=((neq,neq*(nlag+1)))))
+    q = matrix(zeros(shape=((neq*nlead,neq*(nlag+nlead)))))
     rc, cc = cofb.shape
-    qs = scipy.sparse.csr_matrix(q)
-    qs[0:rc,0:cc] = scipy.sparse.csr_matrix(cofb)
+    qs = csr_matrix(q)
+    qs[0:rc,0:cc] = csr_matrix(cofb)
     qcols = neq*(nlag+nlead)
     
     if nlead > 1: 
@@ -70,7 +72,7 @@ def Obstruct(cof,cofb,neq,nlag,nlead):
     minus = 0:neq*(nlag+1)
     plus  = neq*(nlag+1):neq*(nlag+1+nlead)
     
-    cofs = scipy.sparse.csr_matrix(cof)
+    cofs = csr_matrix(cof)
     scof[:,neq:neq*(nlag+1)] = cofs[:,plus] * qs[:,l]
     scof = scof + cofs[:,minus]
     

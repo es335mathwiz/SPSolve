@@ -1,6 +1,3 @@
-# Import the numpy package
-import numpy
-
 def copyW(q,w,js,iq,qrows):
 
     #  Copy the eigenvectors corresponding to the largest roots into the
