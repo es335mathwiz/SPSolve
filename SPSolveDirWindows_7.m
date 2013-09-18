@@ -1,2 +1,2 @@
 function res=SPSolveDir
-res=['g:\git\SPExperiment' '\'];
+res=['g:\git\SPSolve' '\'];

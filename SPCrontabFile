@@ -1,1 +1,1 @@
-16 3 * * 0-6 g:\git\SPExperiment\SPCron.sh
+16 3 * * 0-6 /msu/home/m1gsa00/git/SPSolve/SPCron.sh
