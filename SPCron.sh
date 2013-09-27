@@ -1,3 +1,3 @@
 csh .cshrc
-cd /msu/home/m1gsa00/git/SPSolve
+cd g:\git\SPSolve
 matlab -nosplash -nodesktop  -r SPCronMatlabCommands

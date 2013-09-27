@@ -1,0 +1,9 @@
+function [vartheta]=SPComputeVartheta(phimat,psimat,fmat,upsilon)
+[frows,fcols]=size(fmat);
+[phirows,phicols]=size(phimat);
+[psirows,psicols]=size(psimat);
+krnprt=kron(upsilon',fmat);
+[krnrows,krncols]=size(krnprt);
+bigun=eye(krnrows)-krnprt;
+bigvec=reshape(phimat * psimat,[phirows*psicols,1]);
+vartheta=reshape(bigun\bigvec,[phirows,psicols]);
