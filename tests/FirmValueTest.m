@@ -66,9 +66,8 @@ classdef FirmValueTest < matlab.unittest.TestCase
            testCase.verifyEqual(cofbTst,newCofb,'AbsTol',eps);
         end
         function testSPSolvePath(testCase)
-            thePath=which('SPSolve');
-            expPath='g:\git\SPSolve\SPSolve.m';
-            testCase.verifyEqual(thePath,expPath);
+            theVal=exist('SPSolve');
+            testCase.verifyEqual(theVal,2);
         end
         function testObstruct(testCase)
             load firmValueTest.mat;
