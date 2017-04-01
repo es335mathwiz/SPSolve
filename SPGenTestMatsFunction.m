@@ -72,7 +72,7 @@ if(parserRetCode==0)
   cof(1:rg,1:cg) = cofg;
   cof = cof + cofh;
 
-  [cofb,rts,ia,nex,nnum,lgrts,AMAcode] = SPGenTestMatsAmalg(cof,neq,nlag,nlead,condn,uprbnd);
+  [cofb,rts,ia,nex,nnum,lgrts,AMAcode] = SPGenTestMatsAmalg(modnam,cof,neq,nlag,nlead,condn,uprbnd);
 
   if AMAcode>1,
     disp(SPAMAerr(AMAcode));

@@ -1,5 +1,5 @@
 function [b,rts,ia,nexact,nnumeric,lgroots,AMAcode] = ...
-                        SPGenTestMatsAmalg(h,neq,nlag,nlead,condn,uprbnd)
+                        SPGenTestMatsAmalg(modnam,h,neq,nlag,nlead,condn,uprbnd)
 %  [b,rts,ia,nexact,nnumeric,lgroots,AMAcode] = ...
 %                       SPGenTestMatsAmalg(h,neq,nlag,nlead,condn,uprbnd)
 %
@@ -125,8 +125,8 @@ if(AMAcode==0)
     elseif (~nonsing && AMAcode==4)
         AMAcode = 45;
     end
-    savefile='testMats.mat';
+    savefile=[modnam '.mat'];
     save(savefile,'hin','hexact','qexact','nexact','hnumeric',...
     'qnumeric','nnumeric','a','ia','js','w','rts','lgroots',...
-    'q','nonsing','b','AMAcode');
+    'q','nonsing','b','AMAcode','-v4');
 end;
