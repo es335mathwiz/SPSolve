@@ -126,7 +126,14 @@ if(AMAcode==0)
         AMAcode = 45;
     end
     savefile=[modnam '.mat'];
+    rroots=real(rts);iroots=imag(rts);
+    if(nonsing)
+        myNonsing=1;
+    else
+        myNonsing=0;
+    end
+    dims=[neq nlag nlead];  
     save(savefile,'hin','hexact','qexact','nexact','hnumeric',...
-    'qnumeric','nnumeric','a','ia','js','w','rts','lgroots',...
-    'q','nonsing','b','AMAcode','-v4');
+    'qnumeric','nnumeric','a','ia','js','w','rroots','iroots','lgroots',...
+    'q','myNonsing','b','AMAcode','dims','-v4');
 end;
