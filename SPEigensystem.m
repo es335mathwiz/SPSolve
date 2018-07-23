@@ -1,5 +1,5 @@
 function [w,rts,lgroots] = SPEigensystem(a,uprbnd,rowsLeft)
-%  [w,rts,lgroots] = SPEigensystem(a,uprbnd)
+%  [w,rts,lgroots] = SPEigensystem(a,uprbnd
 %
 %  Compute the roots and the left eigenvectors of the companion
 %  matrix, sort the roots from large-to-small, and sort the

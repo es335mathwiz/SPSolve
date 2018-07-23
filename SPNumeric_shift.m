@@ -48,3 +48,5 @@ while( any(zerorows) && iq <= qrows )
    [Q,R,E] = qr( full(h(:,right)) );
    zerorows = find( abs(diag(R)) <= condn );
 end
+
+display(nnumeric)

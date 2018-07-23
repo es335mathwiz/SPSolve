@@ -1,4 +1,4 @@
-%  [b,rts,ia,nexact,nnumeric,lgroots,AMAcode] = ...
+%  [b,rts,ia,nexact,nnumeric,lgroots,phi,F,AMAcode] = ...
 %                       SPAmalg(h,neq,nlag,nlead,condn,uprbnd)
 %
 %  Solve a linear perfect foresight model using the matlab eig
@@ -29,7 +29,7 @@
 %    lgroots   Number of roots greater in modulus than uprbnd.
 %    AMAcode     Return code: see function AMAerr.
 
-function [b,rts,ia,nexact,nnumeric,lgroots,AMAcode] = ...
+function [b,rts,ia,nexact,nnumeric,lgroots,phi,F,AMAcode] = ...
                         SPAmalg_findPhi_findF(h,neq,nlag,nlead,condn,uprbnd)
 
 originalH = h;
